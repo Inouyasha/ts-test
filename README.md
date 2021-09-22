@@ -11,3 +11,6 @@ node xxx.js
 // nodemon检测js
 npm i -g nodemon
 nodemon xxx.js
+
+具体可以查看文档
+https://www.yuque.com/guang-aadik/txqfk1/pws7sz
