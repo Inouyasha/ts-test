@@ -1,0 +1,25 @@
+{
+  "name": "ts-test",
+  "version": "1.0.0",
+  "description": "The example of using tsc and nodemon to execute typescript code.\r npm i typescript -g",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Inouyasha/ts-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Inouyasha/ts-test/issues"
+  },
+  "homepage": "https://github.com/Inouyasha/ts-test#readme",
+  "dependencies": {
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "@types/ramda": "github:types/npm-ramda#dist"
+  }
+}
