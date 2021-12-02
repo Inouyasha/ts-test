@@ -21,7 +21,7 @@ function throttle(fn: FNThrottle, interval = 16) {
 }
 function debounce(fn: FNThrottle, interval = 16) {
   // 每过interval ms 重新打开
-  let timer: number | null = null;
+  let timer: NodeJS.Timeout | null = null;
 
   // 典型的闭包用法 open会在执行结束前一直保持
   return (...args: Array<any>) => {
