@@ -54,6 +54,10 @@ export class Interval {
     );
   }
   static divInterval(x: Interval, y: Interval) {
+    // 2.10
+    if (y.upperBound() === 0 || y.lowerBound() === 0) {
+      throw new Error("division error (interval spans 0)");
+    }
     return this.mulInterval(
       x,
       this.makeInterval(1 / y.upperBound(), 1 / y.lowerBound())
@@ -70,5 +74,25 @@ export class Interval {
     return this.val > 0
       ? this.val * (1 + this.tolerance)
       : this.val * (1 - this.tolerance);
+  }
+
+  // 2.11 利用中心位置 和 误差宽度进行构建 如 3.5±0.15
+  static makeCenterWidth(center: number, width: number) {
+    return Interval.makeInterval(center - width, center + width);
+  }
+  center() {
+    return (this.lowerBound() + this.upperBound()) / 2;
+  }
+  width() {
+    return (this.upperBound() - this.lowerBound()) / 2;
+  }
+
+  // 2.12 中心位置和误差比例 如 6.0 10 => [5.4,6.6]
+  static makeCenterPercent(center: number, percent: number) {
+    const width = center * (percent / 100);
+    return Interval.makeCenterWidth(center, width);
+  }
+  percent() {
+    return (this.width() / this.center()) * 100;
   }
 }

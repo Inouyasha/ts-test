@@ -1,5 +1,7 @@
-type DirNumType = -1 | 0 | 1;
-type DirType = [DirNumType, DirNumType];
+import { Coordinate } from "./26_cube_park";
+
+export type DirNumType = -1 | 0 | 1;
+export type DirType = [DirNumType, DirNumType];
 
 /**
  * 输入前一个方向 输出下一个可能的方向

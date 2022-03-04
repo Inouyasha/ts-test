@@ -1,4 +1,4 @@
-type Coordinate = [number, number];
+export type Coordinate = [number, number];
 
 /*
  * 这个代码花了很久 原因总结下：
