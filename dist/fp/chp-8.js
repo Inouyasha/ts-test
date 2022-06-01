@@ -1,15 +1,14 @@
 "use strict";
-var Container = /** @class */ (function () {
-    function Container(x) {
+class Container {
+    constructor(x) {
         this.$value = x;
     }
-    Container.of = function (x) {
+    static of(x) {
         return new Container(x);
-    };
-    Container.prototype.map = function (f) {
+    }
+    map(f) {
         return Container.of(f(this.$value));
-    };
-    return Container;
-}());
-console.log(Container.of(2).map(function (two) { return two + 3; }));
+    }
+}
+console.log(Container.of(2).map((two) => two + 3));
 //# sourceMappingURL=chp-8.js.map
