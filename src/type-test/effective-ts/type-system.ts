@@ -742,4 +742,40 @@ interface Document {
 }
 document.monkey = "Tamarin"; // OK
 
+// 如何更好的遍历object
+// 遍历object
+// k的类型是 one two three 而不是string
+const obj = {
+  one: "uno",
+  two: "dos",
+  three: "tres",
+};
+for (const k in obj) {
+  const v = obj[k];
+  // ~~~~~~ Element implicitly has an 'any' type
+  // because type ... has no index signature
+}
+
+// narrow index 
+let k: keyof typeof obj; // Type is "one" | "two" | "three"
+for (k in obj) {
+  const v = obj[k];
+}
+
+// 来源 因为作为iterator无法确定迭代的对象到底是原对象还是extend后的，所以index设置为string 而非key of object
+interface ABC {
+  a: string;
+  b: string;
+  c: number;
+}
+function foo3(abc: ABC) {
+  for (const k in abc) {
+    // const k: string
+    const v = abc[k];
+    // ~~~~~~ Element implicitly has an 'any' type
+    // because type 'ABC' has no index signature
+  }
+}
+const x3 = { a: "a", b: "b", c: 2, d: new Date() };
+foo3(x3); // OK
 
