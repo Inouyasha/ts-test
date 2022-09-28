@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/Inouyasha/ts-test#readme",
   "dependencies": {
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
-    "@types/ramda": "github:types/npm-ramda#dist"
+    "@types/ramda": "^0.28.15",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
   }
 }
