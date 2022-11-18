@@ -10,7 +10,7 @@
         "js": "node --harmony"
     },
     "watch": [
-        "dist/algorithm-exams/*.js"
+        "dist/algorithm-exams/leetcode/*.js"
     ],
     "env": {
         "NODE_ENV": "development",
