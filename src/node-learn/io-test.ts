@@ -10,10 +10,17 @@ setImmediate(function () {
   console.log("setImmediate延迟执行1");
   // 进入下次循环
   process.nextTick(function () {
-    console.log("强势插入");
+    console.log("强势插入1");
+    console.log("强势插入2");
   });
 });
 setImmediate(function () {
   console.log("setImmediate延迟执行2");
 });
 console.log("正常执行");
+
+// import { readFile } from "fs";
+
+// readFile("src/node-learn/assets/test.md", "utf-8", (err, data) => {
+//   console.log(data);
+// });
