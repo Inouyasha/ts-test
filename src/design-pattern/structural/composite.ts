@@ -1,10 +1,9 @@
 type NodeType = Component | null;
 
-
 /**
  * 组合模式 用来处理树状结构数据
  * 该树状结构数据一般要满足两点性质：1. 叶子节点实现operation的操作； 1. 非叶节点用来承载叶子节点，并且实现operation，用来控制所有的子节点实行operation（自动的递归）
- * 
+ *
  * 举例：如knova的draw方法，会让所有的子节点都draw，group作为container，调用draw会traverse所有子节点execute方法draw
  * 有如计算机械臂的重量的方法，机械臂有两端，weight返回所有子节点的重量（只关心容器的遍历行为和子节点的计算行为）
  */
@@ -12,7 +11,7 @@ type NodeType = Component | null;
  * The base Component class declares common operations for both simple and
  * complex objects of a composition.
  */
- abstract class Component {
+abstract class Component {
   protected parent!: NodeType;
 
   /**
@@ -21,11 +20,11 @@ type NodeType = Component | null;
    * provide some default implementation for these methods.
    */
   public setParent(parent: NodeType) {
-      this.parent = parent;
+    this.parent = parent;
   }
 
   public getParent(): NodeType {
-      return this.parent;
+    return this.parent;
   }
 
   /**
@@ -35,16 +34,16 @@ type NodeType = Component | null;
    * object tree assembly. The downside is that these methods will be empty
    * for the leaf-level components.
    */
-  public add(component: Component): void { }
+  public add(component: Component): void {}
 
-  public remove(component: Component): void { }
+  public remove(component: Component): void {}
 
   /**
    * You can provide a method that lets the client code figure out whether a
    * component can bear children.
    */
   public isComposite(): boolean {
-      return false;
+    return false;
   }
 
   /**
@@ -56,23 +55,23 @@ type NodeType = Component | null;
 }
 
 /**
-* The Leaf class represents the end objects of a composition. A leaf can't have
-* any children.
-*
-* Usually, it's the Leaf objects that do the actual work, whereas Composite
-* objects only delegate to their sub-components.
-*/
+ * The Leaf class represents the end objects of a composition. A leaf can't have
+ * any children.
+ *
+ * Usually, it's the Leaf objects that do the actual work, whereas Composite
+ * objects only delegate to their sub-components.
+ */
 class Leaf extends Component {
   public operation(): string {
-      return 'Leaf';
+    return "Leaf";
   }
 }
 
 /**
-* The Composite class represents the complex components that may have children.
-* Usually, the Composite objects delegate the actual work to their children and
-* then "sum-up" the result.
-*/
+ * The Composite class represents the complex components that may have children.
+ * Usually, the Composite objects delegate the actual work to their children and
+ * then "sum-up" the result.
+ */
 class Composite extends Component {
   protected children: Component[] = [];
 
@@ -81,19 +80,19 @@ class Composite extends Component {
    * complex) to or from its child list.
    */
   public add(component: Component): void {
-      this.children.push(component);
-      component.setParent(this);
+    this.children.push(component);
+    component.setParent(this);
   }
 
   public remove(component: Component): void {
-      const componentIndex = this.children.indexOf(component);
-      this.children.splice(componentIndex, 1);
+    const componentIndex = this.children.indexOf(component);
+    this.children.splice(componentIndex, 1);
 
-      component.setParent(null);
+    component.setParent(null);
   }
 
   public isComposite(): boolean {
-      return true;
+    return true;
   }
 
   /**
@@ -103,18 +102,18 @@ class Composite extends Component {
    * children and so forth, the whole object tree is traversed as a result.
    */
   public operation(): string {
-      const results = [];
-      for (const child of this.children) {
-          results.push(child.operation());
-      }
+    const results: string[] = [];
+    for (const child of this.children) {
+      results.push(child.operation());
+    }
 
-      return `Branch(${results.join('+')})`;
+    return `Branch(${results.join("+")})`;
   }
 }
 
 /**
-* The client code works with all of the components via the base interface.
-*/
+ * The client code works with all of the components via the base interface.
+ */
 function compositeClient(component: Component) {
   // ...
 
@@ -124,16 +123,16 @@ function compositeClient(component: Component) {
 }
 
 /**
-* This way the client code can support the simple leaf components...
-*/
+ * This way the client code can support the simple leaf components...
+ */
 const simple = new Leaf();
-console.log('Client: I\'ve got a simple component:');
+console.log("Client: I've got a simple component:");
 compositeClient(simple);
-console.log('');
+console.log("");
 
 /**
-* ...as well as the complex composites.
-*/
+ * ...as well as the complex composites.
+ */
 const tree = new Composite();
 const branch1 = new Composite();
 branch1.add(new Leaf());
@@ -142,25 +141,27 @@ const branch2 = new Composite();
 branch2.add(new Leaf());
 tree.add(branch1);
 tree.add(branch2);
-console.log('Client: Now I\'ve got a composite tree:');
+console.log("Client: Now I've got a composite tree:");
 compositeClient(tree);
-console.log('');
+console.log("");
 
 /**
-* Thanks to the fact that the child-management operations are declared in the
-* base Component class, the client code can work with any component, simple or
-* complex, without depending on their concrete classes.
-*/
+ * Thanks to the fact that the child-management operations are declared in the
+ * base Component class, the client code can work with any component, simple or
+ * complex, without depending on their concrete classes.
+ */
 function compositeClient2(component1: Component, component2: Component) {
   // ...
 
   if (component1.isComposite()) {
-      component1.add(component2);
+    component1.add(component2);
   }
   console.log(`RESULT: ${component1.operation()}`);
 
   // ...
 }
 
-console.log('Client: I don\'t need to check the components classes even when managing the tree:');
+console.log(
+  "Client: I don't need to check the components classes even when managing the tree:"
+);
 compositeClient2(tree, simple);
