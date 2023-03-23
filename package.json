@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/Inouyasha/ts-test#readme",
   "dependencies": {
-    "ramda": "^0.28.0"
+    "ramda": "^0.28.0",
+    "rxjs": "^7.8.0"
   },
   "devDependencies": {
     "@types/ramda": "^0.28.15",
