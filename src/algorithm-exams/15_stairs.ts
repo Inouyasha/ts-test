@@ -19,7 +19,7 @@ function stairMeetCount1(n: number) {
 console.log(stairMeetCount1(10));
 
 // 其实如果带状态转移本质上也是动态规划
-const N = 10;
+const N = 11;
 const STEPS = 3;
 function stairMeetCount(a: number, b: number) {
   if (a > b) return 0;
