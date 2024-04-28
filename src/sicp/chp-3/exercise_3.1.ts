@@ -1,3 +1,5 @@
+type account = (amount: number) => number | string;
+
 /* 
   3.1 An accumulator is a function that is called repeatedly with a single numeric argument and accumulates
   its arguments into a sum. Each time it is called, it returns the currently accumulated sum. Write a
@@ -63,7 +65,7 @@ function make_account(balance: number) {
     balance = balance + amount;
     return balance;
   }
-  function dispatch(m: "withdraw" | "deposit") {
+  function dispatch(m: "withdraw" | "deposit"): account {
     if (m === "withdraw") {
       return withdraw;
     }
@@ -125,3 +127,47 @@ function make_account_3_4(initialBalance: number, password: string) {
 // console.log(test_304("secret password1", "withdraw")(60));
 // console.log(test_304("secret password1", "withdraw")(60));
 // console.log(test_304("secret password1", "deposit")(60));
+
+/**
+ * 输入原账户和原密码 以及新密码 生成一个新的account 可以根据新密码操控原账户
+ * 不在创建时验证密码的正确性 只在每次调用时会返回
+ *
+ * @param {Object} origin_account
+ * @param {string} origin_password
+ * @param {*} new_password
+ */
+function make_joint_307(
+  origin_account: (password: string, order: "withdraw" | "deposit") => account,
+  origin_password: string,
+  new_password: string
+): (password: string, order: "withdraw" | "deposit") => account {
+  let _password = new_password;
+
+  return (password: string, order: "withdraw" | "deposit") => {
+    if (password !== _password) {
+      return (amount: number) => "Incorrect password";
+    }
+
+    return origin_account(origin_password, order);
+  };
+}
+/**
+ * 生成一个函数 先计算0和先计算1的加和结果不同
+ *
+ * @return {*} 
+ */
+function f_308_generator() {
+  let state = 0;
+
+  return (input: number): number => {
+    if (input === 0) {
+      state = 1;
+      return 0;
+    } else {
+      return state;
+    }
+  };
+}
+const f_308 = f_308_generator();
+const f_308_2 = f_308_generator();
+console.log(f_308(0) + f_308(1), f_308_2(1) + f_308_2(0)); // 1 0

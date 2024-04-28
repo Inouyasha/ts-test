@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Inouyasha/ts-test#readme",
   "dependencies": {
+    "download-git-repo": "^3.0.2",
     "ramda": "^0.28.0"
   },
   "devDependencies": {
