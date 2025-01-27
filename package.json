@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Inouyasha/ts-test#readme",
   "dependencies": {
+    "decimal.js": "^10.5.0",
     "ramda": "^0.28.0"
   },
   "devDependencies": {
