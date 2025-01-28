@@ -27,7 +27,7 @@ abstract class GeneticAlgorithm<T> {
   protected abstract canStop(): boolean; // 结束条件
 
   // 根据当前分布选择新的种群的开始基因
-  private selection(): T[] {
+  protected selection(): T[] {
     // 生成N个[0,1]随机数 用于产生物种
     const selectionValues = Array.from({ length: this.N }, () => {
       return Math.random();
@@ -106,13 +106,14 @@ abstract class GeneticAlgorithm<T> {
 }
 
 type num4Arr = [number, number, number, number];
+
 class PolynomialGeneticAlgorithm extends GeneticAlgorithm<num4Arr> {
-  N = 10;
-  MAX_GENERATION = 10000;
+  N = 100;
+  MAX_GENERATION = 500;
   mateProbability = 0.85;
   mutationProbability = 0.1;
 
-  // 生成x1-x4序列 [-10,10]
+  // 修改点3：优化初始化精度
   protected initialize(): num4Arr[] {
     return Array.from({ length: this.N }, () => {
       return Array.from({ length: 4 }, () =>
@@ -121,11 +122,12 @@ class PolynomialGeneticAlgorithm extends GeneticAlgorithm<num4Arr> {
     }) as num4Arr[];
   }
 
+  // 修改点4：移除精度截断
   protected evaluate(species: num4Arr) {
     return new Decimal(1)
       .div(
-        new Decimal(species[0])
-          .abs()
+        new Decimal(1)
+          .plus(new Decimal(species[0]).abs())
           .plus(new Decimal(species[1]).abs())
           .plus(new Decimal(species[2]).abs())
           .plus(new Decimal(species[3]).abs())
@@ -134,6 +136,7 @@ class PolynomialGeneticAlgorithm extends GeneticAlgorithm<num4Arr> {
       .toNumber();
   }
 
+  // 修改点5：改进交叉策略
   protected exchange(species: num4Arr[]): num4Arr[] {
     const mateList: num4Arr[] = []; // 要交配的
     const unMateList: num4Arr[] = []; // 不交配的
@@ -176,22 +179,50 @@ class PolynomialGeneticAlgorithm extends GeneticAlgorithm<num4Arr> {
     return [...mateList, ...unMateList];
   }
 
+  // 修改点6：改进变异策略
+  // 这一点是成功的关键 如果直接式用随机数，结果会大概率无法走向最优，因为扰动太大了
+  // 所以变异的步长很关键
   protected mutation(species: num4Arr[]): num4Arr[] {
-    for (const item of species) {
-      for (let i = 0; i !== item.length; i++) {
-        // 对于每个基因 以mutationProbability概率变异
+    return species.map((item) => {
+      return item.map((x, i) => {
         if (Math.random() < this.mutationProbability) {
-          item[i] = new Decimal(Math.random()).mul(20).minus(10).toDP(4).toNumber();
+          // 小幅扰动代替完全重置
+          const delta = (Math.random() - 0.5) * 0.5; // ±0.25范围
+          return Number(Math.max(-10, Math.min(10, x + delta)).toFixed(4));
         }
-      }
+        return x;
+      }) as num4Arr;
+    });
+  }
+
+  // 修改点7：添加精英保留
+  public process() {
+    this.currSpecies = this.initialize();
+    this.evaluateSpecies();
+
+    while (!this.canStop()) {
+      this.generation++;
+
+      const selectSpecies = this.selection();
+      const mateSpecies = this.exchange(selectSpecies);
+      const mutationSpecies = this.mutation(mateSpecies);
+
+      // 用最佳个体替换最差个体
+      const all = [...mutationSpecies, this.bestSpecies];
+      all.sort((a, b) => this.evaluate(b) - this.evaluate(a));
+      this.currSpecies = all.slice(0, this.N);
+
+      this.evaluateSpecies();
+      this.output();
     }
-    return species;
   }
 
   protected canStop(): boolean {
     return this.generation >= this.MAX_GENERATION;
   }
 }
+
+// 使用方式保持不变
 const instance = new PolynomialGeneticAlgorithm();
 instance.process();
 instance.output();
