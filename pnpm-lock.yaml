@@ -12,6 +12,9 @@ importers:
         specifier: ^0.28.0
         version: 0.28.0
     devDependencies:
+      '@types/node':
+        specifier: ^18.11.9
+        version: 18.19.130
       '@types/ramda':
         specifier: ^0.28.15
         version: 0.28.25
@@ -23,6 +26,9 @@ importers:
         version: 4.9.5
 
 packages:
+
+  '@types/node@18.19.130':
+    resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
   '@types/ramda@0.28.25':
     resolution: {integrity: sha512-HrQNqQAGcITpn9HAJFamDxm7iZeeXiP/95pN5OMbNniDjzCCeOHbBKNGmUy8NRi0fhYS+/cXeo91MFC+06gbow==}
@@ -160,7 +166,14 @@ packages:
   undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
 
+  undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
 snapshots:
+
+  '@types/node@18.19.130':
+    dependencies:
+      undici-types: 5.26.5
 
   '@types/ramda@0.28.25':
     dependencies:
@@ -285,3 +298,5 @@ snapshots:
   typescript@4.9.5: {}
 
   undefsafe@2.0.5: {}
+
+  undici-types@5.26.5: {}
